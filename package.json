@@ -19,7 +19,16 @@
     "GitHub Actions",
     "Escola TAT"
   ],
+  "scripts": {
+  "cy:open": "cypress open",
+  "test": "cypress run",
+  "cy:open:mobile": "cypress open --config viewportWidth=370 viewportHeight=660",
+  "test:mobile": "cypress run --config viewportWidth=410 viewportHeight=860"
+},
   "author": "Walmyr <wlsf82@gmail.com> (https://walmyr.dev/)",
   "license": "MIT",
-  "homepage": "https://github.com/wlsf82/cypress-do-zero-a-nuvem#readme"
+  "homepage": "https://github.com/wlsf82/cypress-do-zero-a-nuvem#readme",
+  "devDependencies": {
+    "cypress": "^13.12.0"
+  }
 }

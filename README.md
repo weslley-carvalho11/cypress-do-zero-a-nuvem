@@ -1,10 +1,31 @@
-# 🌲 Cypress, do Zero à Nuvem ☁️
+# CYPRESS-DO-ZERO-A-NUVEM
 
-👋 Seja bem-vindo(a)!
+Esse projeto trata-se de um curso ministrado pelo [Walmyr Filho](https://walmyr.dev), no qual ele ensina conceitos básicos de Cypress até o seu uso na nuvem. No repositório conseguimos visualizar as automações feitas na plataforma CAC TAT - Central de Atendimento ao Cliente.
 
-É muito bom tê-lo(a) aqui. Tenho certeza que você vai amar esse curso. ❤️
+Segue o link do curso: [Cypress, do Zero à Nuvem](https://www.udemy.com/course/testes-automatizados-com-cypress-basico/?couponCode=ST16MT28125).
 
-## O que você vai aprender?
+## Pré-requisitos
+
+Segue a lista de requisitos para executar as automações:
+- NPM: v10.7.0
+- Node.js: v20.14.0
+- Git: v2.43.0
+
+
+## Instalação
+
+Passa a passo para instalar o Node.js:
+- Acesse o site: `https://nodejs.org/`
+- Baixe a versão LTS (Long-Term Support), essa versão possui mais estabilidade;
+- Execute o arquivo baixado, após isso você terá instalado o Node.js e NPM (Node Package Manager).
+
+## Testes
+
+Comandos para execução dos testes:
+- Modo Headless: Digitar o comando `npm test' no terminal`. 
+- Modo Interativo: Digitar o comando `npm run cy:open` no terminal.
+
+## O que eu aprendi?
 
 - Como configurar um projeto Cypress do zero
 - Como visitar páginas locais e remotas
@@ -19,10 +40,6 @@
 - Como executar os testes em um _workflow_ de integração contínua sempre que mudanças ocorrerem no código da aplicação (ou dos testes)
 - Como integrar seu _workflow_ de integração contínua com o Cypress Cloud (o serviço de gestão de testes do Cypress na nuvem)
 
-## Vamos começar?
-
-Vá para a seção [estrutura do curso](./lessons/_course-structure_.md).
-
 ___
 
-Este é um curso da **Escola Talking About Testing**.
+Esse projeto originalmente pertence a [Walmyr](https://walmyr.dev).

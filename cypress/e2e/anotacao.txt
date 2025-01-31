@@ -1,0 +1,197 @@
+Curso Cypress, do Zero à Nuvem
+Link do projeto: https://github.com/wlsf82/cypress-do-zero-a-nuvem
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+                                                      Anotações
+---------------------------------------------------------------------------------------------------------------------------------------- 
+Curiosidade do cypress:
+- Em alguns softwares e sistemas operacinais se o número da versão for par significa que possuirá maior tempo de suporte. Chamamos de LTS. 
+- Hoje em dia para fazer as atualizações no reposiórios git usamos o ssh.
+- Para conseguir usar o cypress em um projeto precisamos baixa-lo na pasta raiz.
+- O Cypress por padrão tenta executar o teste durante 4 segundos antes de avisar que o teste falhou.
+- Na ferramenta do "Cypress" (Modo Interativo) há um log de comandos que fica do lado esquerdo, ele exibe o passo a passo executado do teste.
+- O Cypress pode ser usado de dois jeitos no modo "Interativo" e no modo "Headless".
+- No modo interativo abrimos o app do cypress e visualizamos a execução dos testes.
+- No modo headlass não visualizamos a execução dos testes. Esse é o jeito que os testes são executados em uma pipeline de testes. Todas as execuções
+são gravadas em uma pasta.
+- Os comandos de ações devem estar no final do encademento nunca no meio ou no começo.
+- Os comandos de ações não devem estar uma após a outra.
+- Existe um módulo no cypress quando digitamos "Cypress", apartir daí podemos usar algumas funções empacotas no cypress, dentre elas o Lowdash (Biblioteca) 
+que possui algumas funções utilitarias, uma delas é o "Repeat", onde passamos dois argumentos uma sting e um número. A string é texto que queremos repetir 
+e número é a quantidade de vezes que queremos repetir aquele texto. No exmplo tudo isso é atribuído a uma constante. 
+- As verificações sempre ficam no arquivo principal.
+- Os comandos customizados abstraem as ações realizadas o que pode melhorar a leitura do arquivo de execução de teste.
+- Não precisa ter todos os comandos customizados em unico arquivo. Conseguimos adicionar outros arquivos na pasta de "Support".
+- Para que o arquivo com comandos customizados estaja disponível comouma função do cypress devemos importa-lo no arquivo e2e.js; 
+- import './comando-customizado' é comando que usamos para importar comandos costumizados de um arquivo;
+- chamaos de hardcoded quando os valor de comando customizado estáo fixos ("chumbados").
+- O ".contains" é uma alternativa para o ".get" quando o seletor css não é a melhor opção.
+- Se um elemento âncora (<a>) possuir o atributo target com o valor _blank, ao ser clicado, o valor do atributo href será aberto em uma nova aba. Este é o comportamento padrão em qualquer navegador.
+
+
+Existem 4 tipos de comando em cypress: 
+- query- comandos que leem o estado da sua aplicação
+- assertion- comando que afirma sobre um determinado estado
+- action- interagir com seu aplicativo como um usuário faria
+- other- qualquer outro comando que seja útil para escrever testes
+https://docs.cypress.io/api/table-of-contents#Commands
+
+Hooks (ganchos) são:
+- before, beforeEach, after e afterEach.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+                                                          Termos 
+------------------------------------------------------------------------------------------------------------------------------------
+- LTS: Long-Term Support (Suporte de longo Prazo) -> É termo usado para suporte estendido para softwares e sistemas operacionais. 
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+Comandos IDE Visual Studio
+------------------------------------------------------------------------------------------------------------------------------------
+shift + alt + f
+-> Identar o código 
+
+ctrl + ;
+-> Comentar o código
+
+
+------------------------------------------------------------------------------------------------------------------------------------
+                                                      Comandos CMD
+------------------------------------------------------------------------------------------------------------------------------------
+Versionamento de softwares:
+git --version (versão do Git)
+node --version (versão do Node)
+npm --version (versão do NPM)
+Com o "&&" conseguimos juntar os comandos em uma só linha
+
+Baixar o cypress:
+npm install cypress@13.12.0 --save-dev (comando para baixar o cypress)
+npm i cypress@13.12.0 -D (versão mais curta do comendo acima)
+Obs: Devemos baixar na raiz do projeto 
+
+Navegação entre repositórios:
+dir-> Lista os arquivos da pasta.
+cd.. -> Volta para repositório anterior.
+cd nome da pasta -> Entra no repositório digitado.
+cls -> Limpa o conteúdo do prompt de comando.
+./ -> Repositorio atual.
+../ -> Repositorio pai (um nível acima).
+
+Comandos para rodar o cypress:
+npx cypress open -> Abre a ferramenta do modo interativo do cypress.
+npx cypress run -> Executa os testes do cypress no modo headlass (Nós não conseguimos ver a execução do testes, 
+mas ele gera prints e vídeos dos resultados)
+
+-----------------------------------------------------------------------------------------------------------------------------------
+                                                         Arquivos
+-----------------------------------------------------------------------------------------------------------------------------------
+Pasta e2e armazenamos os arquivos de execução.
+commands.js -> Arquivo noqual podemos adicionar os comandos costumizados.
+cypress.config.js -> Arquivo que armazena as configurações padrões do cypress. 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+                                                          Extensões 
+-----------------------------------------------------------------------------------------------------------------------------------
+Marckdown Preview -> Ao clicar em ícone de lupa conseguimos visualizar o preview do arquivo de marckdown;
+
+----------------------------------------------------------------------------------------------------------------------------------
+                                                          Cypress
+-----------------------------------------------------------------------------------------------------------------------------------
+cypress.visit('./src/index.html') 
+cypress.visit('https://google.com') 
+-> Ele visita o aquivo html ou o link do site inserido como parametro.
+-> Leva até o caminho definido na url base que fica localiza no cypress.config.js
+
+.get('')
+-> Ele serve para identificar um elemento na tela da aplicação.
+-> Ele recebe como parametro o seletor CSS. 
+
+CSS Selector:
+-> #nomeId "#" + o nome do id faz com o cypress busque pelo elemento sem a necessidade de colocar o atributo
+-> .nomeClass "." o nome da class que você busca .error, .sucess, .button
+-> '[id="firstName"]' entre aspas simples adicinamos o atributo que pode ser id, class e name + nome dele
+-> 'button[type="submit"]' entre aspas simples adicionamos a tag e algum atributo que possa deixa-lo exclusivo
+-> 'input[type="radio"][value="feedback"]' podemos adicionar mais de um atributo
+-> '#privacy a' adicionamos o id + tag
+
+.contains()
+
+.type('')
+-> Tradução "Digitar";
+-> Esse comando serve para escrever textos; 
+-> Ele demora 10 milisegundos para digitar uma letra; 
+-> Conseguimos passar um objeto junto ao comando para acelerar o processo de digitação, 
+usamos o delay;
+-> Podemos também criar uma constante para armazenar o texto e passa-lo como parametro no camando
+--> Exemplo: cy.get(#area-de-texto).type('Esse texto é muito grande')
+--> Exemplo usando o delay: cy.get(#area-de-texto).type('Esse texto é muito grande', {delay: 0})
+
+
+.should('')
+-> Tradução "Deve". 
+-> Esse comando serve para verificar o resultado dos testes.
+-> Existem diversos tipos de verificações. 
+-> Exemplo: cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
+
+.clear()
+.click()
+
+
+
+.selectFile('')
+-> É o comando no qual faz o upload de arquivo.
+-> Como argumento passamos um string com caminho do arquivo que queremos fazr o upload de arquivo.
+-> Por padrão é selecionado a ação de "Select" (Simula o clique no botão e clicar no arquivo da pasta).
+-> Conseguimos passar um objeto para mudar o tipo de ação drag and drop. Para isso incluímos dentro do 
+".selectFile()" {action: 'drag-drop'}. 
+-> https://docs.cypress.io/api/commands/selectfile
+
+
+--------------------------------------------------------------------------------------------------------------------
+                                                Código
+--------------------------------------------------------------------------------------------------------------------
+  it.only(`marca cada tipo de atendimento`, () => {
+    cy.get(`input[type="radio"]`).each(typeOfService => {
+      cy.wrap(typeOfService)
+      .check()
+      .should(`be.checked`)
+    
+    })
+  })
+  -> cy.get(`input[type="radio"]`) busca os inputs com o type do `radio`. Nisso ele encontra tres elementos
+  -> .each(typeOfService => {}) recebe como argumento typeOfService e a funcao de callback
+  -> typeOfService vai receber o elemnto encontrado
+  -> cy.wrap(typeOfService) -> Vai empacotar cada um dos elementos
+  ->  .check() -> seleciona o elemento
+      .should(`be.checked`) -> Confere se foi selecionado
+
+
+  it('seleciona um arquivo da pasta fixture', () => {
+    cy.get('#file-upload')
+    .selectFile('./cypress/fixtures/example.json')
+    .should(input => {
+      expect(input[0].files[0].name).to.equal('example.json')
+    })
+  })
+
+-> O Cypress busca pelo elemnto com id "file-upload", ao encontra-lo ele pega esse
+elemento.  
+-> Esse comanndo faz o upload de arquivo, para isso é necessário
+passar o caminho do arquivo.
+-> Não há argumento para o comando ".should" que verifique o nome do arquivo selecionado para o upload, por isso
+passamos como argumento uma função para validarmos o nome do arquivo. Nós usamos de verificação de javascript. 
+Quando alguém faz upload essas informações ficam no console para vizualizar o nome do arquivo usamos o 
+console.log(), dentro dele passamos como argumento o que passamos dentro de should 
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+Dúvidas
+----------------------------------------------------------------------------------------------------------------------------------
+- Teste Deterministico 
+- Argumento 
+- Função de callback
+- viewport
+- integração contínua
