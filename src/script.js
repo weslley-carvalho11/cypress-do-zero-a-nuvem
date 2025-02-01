@@ -3,16 +3,16 @@ let isPhoneRequired = false
 const phoneLabelSpan = document.querySelector('.phone-label-span')
 const phoneField = document.getElementById('phone')
 
-// document.querySelector('#phone-checkbox')
-//   .addEventListener('change', function() {
-//     if (this.checked) {
-//       phoneLabelSpan.style.display = 'inline'
-//     } else {
-//       phoneLabelSpan.style.display = 'none'
-//     }
-//     phoneField.required = !isPhoneRequired
-//     isPhoneRequired = !isPhoneRequired
-//   })
+document.querySelector('#phone-checkbox')
+  .addEventListener('change', function() {
+    if (this.checked) {
+      phoneLabelSpan.style.display = 'inline'
+    } else {
+      phoneLabelSpan.style.display = 'none'
+    }
+    phoneField.required = !isPhoneRequired
+    isPhoneRequired = !isPhoneRequired
+  })
 
 document.querySelector('button[type="submit"]')
   .addEventListener('click', function(event) {
@@ -33,9 +33,9 @@ document.querySelector('button[type="submit"]')
     if (isPhoneRequired && !phoneField.value) {
       return showAndHideErrorMessage()
     }
-    // if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
-    //   return showAndHideErrorMessage()
-    // }
+    if (!emailField.value.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
+      return showAndHideErrorMessage()
+    }
     firstNameField.value = ''
     lastNameField.value = ''
     emailField.value = ''
