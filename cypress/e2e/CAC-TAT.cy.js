@@ -3,8 +3,10 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.visit('./src/index.html')
   })
 
-  it('verifica o título da aplicação', () => {
-    cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
+  Cypress._.times(10, () => {
+    it('verifica o título da aplicação', () => {
+      cy.title().should('be.equal', 'Central de Atendimento ao Cliente TAT')
+    })
   })
 
   it('preenche os campos obrigatórios e envia o formulário', () => {
@@ -31,6 +33,17 @@ describe('Central de Atendimento ao Cliente TAT', () => {
   })
 
   it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário', () => {
+    cy.get('input[id="firstName"]').type('Osvaldo')
+    cy.get('input[id="lastName"]').type('Cruz')
+    cy.get('input[id="email"]').type('osvaldocruz@gmail.com')
+    cy.get('input[id="phone-checkbox"]').click()
+    cy.get('#open-text-area').type('Isso fez um texto')
+    cy.get('.button').click()
+
+    cy.get('.error').should('be.visible')
+  })
+
+  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário (usando os comandos .clock e .tick)', () => {
     cy.get('input[id="firstName"]').type('Osvaldo')
     cy.get('input[id="lastName"]').type('Cruz')
     cy.get('input[id="email"]').type('osvaldocruz@gmail.com')
@@ -73,30 +86,28 @@ describe('Central de Atendimento ao Cliente TAT', () => {
   })
 
   it('envia o formuário com sucesso usando um comando customizado', () => {
+    cy.fillMandatoryFieldsAndSubmit1()
 
+    cy.get('.success').should('be.visible')
   })
 
 
-  // it.only('envia o formuário com sucesso usando um comando customizado', () => {
-  //   cy.fillMandatoryFieldsAndSubmit()
+  it('envia o formuário com sucesso usando um comando customizado', () => {
+    const data = {
+      firstName: 'Nicolas',
+      lastName: 'Souza',
+      email: 'nicosousa@gmail.com',
+      text: 'Teste'
+    }
+    cy.fillMandatoryFieldsAndSubmit2(data)
 
-  //   cy.get('.success').should('be.visible')
-  // })
+    cy.get('.success').should('be.visible')
+  })
 
-  // it.only('envia o formuário com sucesso usando um comando customizado', () => {
-  //   const data = {
-  //     firstName: 'Nicolas',
-  //     lastName: 'Souza',
-  //     email: 'nicosousa@gmail.com',
-  //     text: 'Teste'
-  //   }
-  //   cy.fillMandatoryFieldsAndSubmit(data)
 
-  //   cy.get('.success').should('be.visible')
-  // })
 
   it('envia o formuário com sucesso usando um comando customizado', () => {
-    cy.fillMandatoryFieldsAndSubmit()
+    cy.fillMandatoryFieldsAndSubmit3()
     cy.get('.success').should('be.visible')
   })
 
@@ -170,7 +181,6 @@ describe('Central de Atendimento ao Cliente TAT', () => {
     cy.get('.error').should('be.visible')
   })
 
-  // 27-01-25 (segunda)
   it('seleciona um arquivo da pasta fixture', () => {
     cy.get('#file-upload')
       .selectFile('./cypress/fixtures/example.json')
@@ -203,6 +213,145 @@ describe('Central de Atendimento ao Cliente TAT', () => {
   it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
     cy.get('#privacy a').invoke('removeAttr', 'target').click()
     cy.contains('h1', 'CAC TAT - Política de Privacidade').should('be.visible')
+  })
+
+  it('exibe e oculta as mensagens de sucesso e erro usando .invoke()', () => {
+    cy.get('.success')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Mensagem enviada com sucesso.')
+      .invoke('hide')
+      .should('not.be.visible')
+    cy.get('.error')
+      .should('not.be.visible')
+      .invoke('show')
+      .should('be.visible')
+      .and('contain', 'Valide os campos obrigatórios!')
+      .invoke('hide')
+      .should('not.be.visible')
+  })
+
+  it('Exercício extra 3', () => {
+    cy.get('#open-text-area').invoke('val', 'um texto qualquer').should('have.value', 'um texto qualquer')
+  })
+
+  it('faz uma requisição HTTP', () => {
+    cy.request({
+      method: 'GET',
+      url: 'https://cac-tat-v3.s3.eu-central-1.amazonaws.com/index.html'
+    }).then((response) => {
+      expect(response.status).to.equal(200);
+      expect(response.statusText).to.equal('OK')
+      expect(response.body).contains('CAC TAT')
+    })
+  })
+
+  it('faz uma requisição HTTP', () => {
+    cy.request('https://cac-tat-v3.s3.eu-central-1.amazonaws.com/index.html')
+      .as('getRequest')
+      .its('status')
+      .should('be.equal', 200)
+
+    cy.get('@getRequest')
+      .its('statusText')
+      .should('be.equal', 'OK')
+
+    cy.get('@getRequest')
+      .its('body')
+      .should('include', 'CAC TAT')
+
+  })
+
+  it('Encontre o gato', () => {
+    cy.get('#cat').invoke('show')
+  })
+
+  //Códigos refatorados com os comando ".clock()" e ".tick()"
+  it('preenche os campos obrigatórios e envia o formulário (usando os comandos .clock e .tick)', () => {
+    const longText = Cypress._.repeat('Esse texto é muito longo e irá demorar muito tempo para ser digitado. Vamos ver quanto tempo o cypress irá demorar para digitar tudo isso', 10)
+    cy.clock()
+    cy.get('#firstName').type('João')
+    cy.get('#lastName').type('Silva de Almeida')
+    cy.get('#email').type('joao@gmail.com')
+    cy.get('#open-text-area').type(longText, { delay: 0 })
+    cy.get('button[type="submit"]').click()
+
+    cy.get('.success').should('be.visible')
+    cy.tick(3000)
+    cy.get('.success').should('not.be.visible')
+  })
+
+  it('exibe mensagem de erro ao submeter o formulário com um email com formatação inválida (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('button[type="submit"]').click()
+    cy.get('.error').should('be.visible')
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
+  })
+
+  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('input[id="firstName"]').type('Osvaldo')
+    cy.get('input[id="lastName"]').type('Cruz')
+    cy.get('input[id="email"]').type('osvaldocruz@gmail.com')
+    cy.get('input[id="phone-checkbox"]').click()
+    cy.get('#open-text-area').type('Isso fez um texto')
+    cy.get('.button').click()
+
+    cy.get('.error').should('be.visible')
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
+  })
+
+  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('input[id="firstName"]').type('Osvaldo')
+    cy.get('input[id="lastName"]').type('Cruz')
+    cy.get('input[id="email"]').type('osvaldocruz@gmail.com')
+    cy.get('input[id="phone-checkbox"]').click()
+    cy.get('#open-text-area').type('Isso fez um texto')
+    cy.get('.button').click()
+
+    cy.get('.error').should('be.visible')
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
+  })
+
+  it('exibe mensagem de erro ao submeter o formulário sem preencher os campos obrigatórios (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('button[type="submit"]').click()
+    cy.get('.error').should('be.visible')
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
+  })
+
+  it('Usando o contains (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('#firstName').type('Osvaldo').should('have.value', 'Osvaldo')
+    cy.get('#lastName').type('Cruz').should('have.value', 'Cruz')
+    cy.get('#email').type('osvaldocruz@gmail.com').should('have.value', 'osvaldocruz@gmail.com')
+    cy.get('#phone').type('1198727272').should('have.value', '1198727272')
+    cy.get('#open-text-area').type(`Isso é um teste`).should(`have.value`, `Isso é um teste`)
+    cy.contains('button', 'Enviar').click()
+
+    cy.get('.success').should('be.visible')
+    cy.tick(3000)
+    cy.get('.success').should('not.be.visible')
+  })
+
+  it('exibe mensagem de erro quando o telefone se torna obrigatório mas não é preenchido antes do envio do formulário (usando os comandos .clock e .tick)', () => {
+    cy.clock()
+    cy.get('input[id="firstName"]').type('Osvaldo')
+    cy.get('input[id="lastName"]').type('Cruz')
+    cy.get('input[id="email"]').type('osvaldocruz@gmail.com')
+    cy.get('input[id="phone-checkbox"]').check()
+    cy.get('#open-text-area').type('Isso fez um texto')
+    cy.get('.button').click()
+
+    cy.get('.error').should('be.visible')
+    cy.tick(3000)
+    cy.get('.error').should('not.be.visible')
   })
 })
 

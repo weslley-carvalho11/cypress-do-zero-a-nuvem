@@ -195,3 +195,4 @@ Dúvidas
 - Função de callback
 - viewport
 - integração contínua
+- snippet de código
